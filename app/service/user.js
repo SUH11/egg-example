@@ -18,16 +18,20 @@ class UserService extends Service {
      * @return 
      */
     async find(params) {
-        const { pageSize = '1', pageNum = '10', sort = 'updatedAt', order = 1 } = params;
+        const { pageSize = '10', pageNum = '1', sort = 'updatedAt', order = 1 } = params;
         const skip = +pageSize * (+pageNum - 1)
-
-        const users = await this.ctx.model.User.find({}, {
+        const content = {
             password: 0,
             salt: 0,
             activated: 0
-        }).sort({ [sort]: order }).skip(skip).limit(+pageSize)
+        }
 
-        return Object.assign({ pageNum, pageSize, sort, order, list: users})
+        const users = await this.ctx.model.User.find({}, content)
+            .sort({ [sort]: order })
+            .skip(skip).
+            limit(+pageSize)
+
+        return Object.assign({}, { pageNum, pageSize, sort, order, list: users})
     }
 
     /**

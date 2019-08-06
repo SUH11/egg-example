@@ -64,18 +64,18 @@ function initialize(User) {
   User.find({}, (err, doc) => {
     if (err) {
       console.log(err);
-      console.log('initialize failed');
+      console.log('initialize user failed');
     } else if (!doc.length) {
       const salt = rand(160, 36);
       new User({
         activated: 1,
-        email: '2929712050@qq.com',
+        email: '1067489058@qq.com',
         name: 'admin',
         password: sha1('admin' + salt),
         salt: salt
       }).save();
     } else {
-      console.log('initialize successfully');
+      console.log('---------initialize user successfully---------');
     }
   });
 }

@@ -55,10 +55,11 @@ class UserController extends Controller {
             validator(ctx.query)
         } catch (e) {
             console.log(e)
-            return ctx.helper.error(ctx, 2, '创建用户列表失败，请仔细核对格式！')
+            return ctx.helper.error(ctx, 2, '获取用户列表失败，请仔细核对格式！')
         }
 
         try {
+            const user = await service.user.find(ctx.query);
             return ctx.helper.success(ctx, user)
         } catch (e) {
             console.log(e)
@@ -104,8 +105,6 @@ class UserController extends Controller {
         const validator = struct({
             _id: 'string'
         })
-
-        console.log('-----------ctx.request.body------------', ctx.request.body)
 
         try {
             validator({

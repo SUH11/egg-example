@@ -10,4 +10,7 @@ module.exports = app => {
   router.get('/userById', controller.user.getUserById)
   router.get('/createUser', controller.user.createUser)
   router.post('/updateById', controller.user.updateById)
+  router.get('/wxUsers', controller.wxUser.getWxUserList)
+  router.post('/addWxUser', controller.wxUser.addWxUser)
+  router.post('/updateWxUserById', controller.wxUser.updateWxUserById)
 };

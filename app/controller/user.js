@@ -1,5 +1,5 @@
-const Controller = require('egg').Controller;
-const struct = require('superstruct').struct;
+const Controller = require('egg').Controller
+const struct = require('superstruct').struct
 
 class UserController extends Controller {
 
@@ -9,34 +9,57 @@ class UserController extends Controller {
     async createUser() {
         const { ctx, service } = this
         const validator = struct({
-            name: 'string',
-            gender: struct.enum(['male', 'female']),
-            email: 'string',
+            count: 'number',
+            level: 'string',
             password: 'string',
-            role: struct.enum(['0', '1']),
-            activated: struct.enum(['0', '1'])
+            username: 'string',
+            percent: 'number'
         })
 
         try {
-            validator(ctx.query)
+            validator(ctx.request.body)
         } catch (e) {
-            return ctx.helper.error(ctx, 0, '创建用户失败，请仔细核对格式！')
+            return ctx.helper.error(ctx, 2, '创建用户失败，请仔细核对格式！')
         }
 
         try {
             const createInfo = await service.user.create({
-                ...ctx.query,
-                role: Number(ctx.query.role),
-                updatedAt: Date.now(),
-                status: '1'
+                ...ctx.request.body,
+                lastTime: Date.now()
             })
 
             return ctx.helper.success(ctx, createInfo)
         } catch (e) {
             console.log(e)
-            return ctx.helper.error(ctx, 0, '系统异常！插入数据失败！')
+            return ctx.helper.error(ctx, 1, '系统异常！插入数据失败！')
         }
 
+    }
+
+    /**
+     * 通过_id来删除用户
+     */
+    async deleteUserById() {
+        const { ctx, service } = this
+        const validator = struct({
+            _id: 'string'
+        })
+
+        try {
+            validator(ctx.request.body)
+        } catch (e) {
+            console.log(e)
+            return ctx.helper.error(ctx, 2, '删除用户失败，请仔细核对格式！')
+        }
+
+        try {
+            const user = await service.user.deleteOneById(ctx.request.body._id)
+
+            return ctx.helper.success(ctx, user)
+        } catch (e) {
+            console.log(e)
+            return ctx.helper.error(ctx, 1, '系统异常！插入数据失败！')
+        }
     }
 
     /**
@@ -80,7 +103,7 @@ class UserController extends Controller {
         try {
             validator(ctx.query)
         } catch (e) {
-            return ctx.helper.error(ctx, 0, '数据格式错误！入参_id应为字符串类型！')
+            return ctx.helper.error(ctx, 2, '数据格式错误！入参_id应为字符串类型！')
         }
 
         try {
@@ -89,7 +112,7 @@ class UserController extends Controller {
             if (user) {
                 return ctx.helper.success(ctx, user)
             } else {
-                return ctx.helper.error(ctx, 0, '查询不到该用户信息！请仔细核对_id！')
+                return ctx.helper.error(ctx, 1, '查询不到该用户信息！请仔细核对_id！')
             }
         } catch (e) {
             console.log(e);
@@ -111,21 +134,20 @@ class UserController extends Controller {
                 _id
             })
         } catch (e) {
-            return ctx.helper.error(ctx, 0, '数据格式错误！入参_id应为字符串类型！')
+            return ctx.helper.error(ctx, 2, '数据格式错误！入参_id应为字符串类型！')
         }
 
         try {
             const updateContent = {
                 ...rest,
-                updatedAt: Date.now(),
-                status: '1'
+                lastTime: Date.now()
             }
             const user = await service.user.findByIdAndUpdate(_id, updateContent);
 
             return ctx.helper.success(ctx, user);
         } catch (e) {
             console.log(e)
-            return ctx.helper.error(ctx, 0, '系统异常！更新数据失败！')
+            return ctx.helper.error(ctx, 1, '系统异常！更新数据失败！')
         }
     }
 }

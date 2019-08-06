@@ -18,12 +18,17 @@ class UserService extends Service {
      * @return 
      */
     async find(params) {
-        const { pageSize = '10', pageNum = '1', sort = 'updatedAt', order = 1 } = params;
+        const { 
+            pageSize = '10', 
+            pageNum = '1', 
+            sort = 'updatedAt', 
+            order = 1 
+        } = params;
         const skip = +pageSize * (+pageNum - 1)
         const content = {
-            password: 0,
-            salt: 0,
-            activated: 0
+            // password: 0,
+            // salt: 0,
+            // activated: 0
         }
 
         const users = await this.ctx.model.User.find({}, content)
@@ -31,7 +36,13 @@ class UserService extends Service {
             .skip(skip).
             limit(+pageSize)
 
-        return Object.assign({}, { pageNum, pageSize, sort, order, list: users})
+        return Object.assign({}, { 
+            pageNum, 
+            pageSize, 
+            sort, 
+            order, 
+            list: users
+        })
     }
 
     /**
@@ -40,9 +51,7 @@ class UserService extends Service {
      */
     async findOne(condition) {
         return await this.ctx.model.User.findOne(condition, {
-            password: 0,
-            salt: 0,
-            activated: 0
+            password: 0
         })
     }
 
@@ -52,9 +61,7 @@ class UserService extends Service {
      */
     async findById(_id) {
         return await this.ctx.model.User.findById({ _id }, {
-            password: 0,
-            salt: 0,
-            activated: 0
+            password: 0
         })
     }
 
@@ -74,6 +81,14 @@ class UserService extends Service {
      */
     async findByIdAndUpdate(_id, content) {
         return await this.ctx.model.User.findByIdAndUpdate(_id, content)
+    }
+
+    /**
+     * 通过_id来删除
+     * @param {String} _id 
+     */
+    async deleteOneById(_id) {
+        return await this.ctx.model.User.findByIdAndRemove(_id)
     }
 
 }

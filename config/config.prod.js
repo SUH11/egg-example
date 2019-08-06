@@ -1,3 +1,6 @@
+/**
+ * @todo 备注： 这里还没有开始写，以下代码是赋值粘贴的
+ */
 // mongodb用户名密码配置文件需要自己建，我是在服务器上自己建的
 const mongoConfig = require('./mongoConfig');
 // redis配置文件需要自己建，我是在服务器上自己建的

@@ -1,6 +1,6 @@
 module.exports = app => {
-    const mongoose = app.mongoose;
-    const Schema = mongoose.Schema;
+    const mongoose = app.mongoose
+    const Schema = mongoose.Schema
 
     /**
      * wxUser:
@@ -11,6 +11,7 @@ module.exports = app => {
         lastTime: Number
         nickName: String
      */
+    
     const WxUserSchema = new Schema({
         _openid: {
             type: Schema.Types.ObjectId

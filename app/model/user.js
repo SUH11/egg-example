@@ -1,82 +1,69 @@
-const rand = require('csprng');
-const sha1 = require('sha1');
+// const rand = require('csprng') 生成随机数
+// const sha1 = require('sha1') password加密用到 password: sha1('myPassword')
 module.exports = app => {
-  const mongoose = app.mongoose;
-  const Schema = mongoose.Schema;
+    const mongoose = app.mongoose
+    const Schema = mongoose.Schema
 
-  const UserSchema = new Schema({
-    name: {
-      type: String,
-      required: true
-    },
-    gender: {
-      type: String,
-      enum: [ 'male', 'female' ], // 0存在 1更新，2 删除
-      default: 'male'
-    },
-    email: {
-      type: String
-    },
-    password: {
-      type: String,
-      required: true
-    },
-    salt: {
-      type: String,
-      default: ''
-    },
-    role: {
-      type: Number,
-      default: 1, // 0： 普通用户，1，管理员
-    },
-    activated: {
-      type: String,
-      enum: [ '0', '1' ], // 0待激活 1已激活
-      default: '0'
-    },
-    createAt: {
-      type: Number,
-      default: Date.now
-    },
-    updatedAt: {
-      type: Number
-    },
-    deletedAt: {
-      type: Number
-    },
-    status: { // 状态
-      type: String,
-      enum: [ '0', '1', '2' ], // 0存在 1更新，2 删除
-      default: '0'
-    }
-  }, { versionKey: false });
-  const User = mongoose.model('Users', UserSchema);
+    /**
+     * user:
+    _id: Object(id)
+    count: Number
+    lastTime: Number
+    level: String
+    password: String
+    percent: Number
+    username: String
+    */
 
-  initialize(User);
-  return User;
-};
+    const UserSchema = new Schema({
+        count: {
+            type: Number
+        },
+        lastTime: {
+            type: Number
+        },
+        level: {
+            type: String
+        },
+        password: {
+            type: String
+        },
+        percent: {
+            type: Number,
+            default: 0
+        },
+        username: {
+            type: String
+        }
+    }, { versionKey: false })
+    const User = mongoose.model('Users', UserSchema)
+
+    initialize(User)
+    return User
+}
 
 /**
  * initialize user
  * @param User
  */
 function initialize(User) {
-  User.find({}, (err, doc) => {
-    if (err) {
-      console.log(err);
-      console.log('initialize user failed');
-    } else if (!doc.length) {
-      const salt = rand(160, 36);
-      new User({
-        activated: 1,
-        email: '1067489058@qq.com',
-        name: 'admin',
-        password: sha1('admin' + salt),
-        salt: salt
-      }).save();
-    } else {
-      console.log('---------initialize user successfully---------');
-    }
-  });
+    User.find({}, (err, doc) => {
+        if (err) {
+            console.log(err)
+            console.log('initialize user failed')
+        } else if (!doc.length) {
+            // 创建一个测试用户
+            new User({
+                count: 21297,
+                lastTime: Date.now(),
+                level: 'Lv.15 圣心如水',
+                username: '001',
+                password: '001',
+                percent: 100
+            }).save()
+        } else {
+            console.log('---------initialize *user* successfully---------')
+        }
+    })
 }
 

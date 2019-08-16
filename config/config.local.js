@@ -16,3 +16,5 @@ exports.mongoose = {
 
 exports.baseUrl = 'http://172.19.0.1:7001';
 // exports.redirectActivationUrl = 'http://172.19.0.1:8080/activation';
+
+// docker镜像地址：https://cloud.docker.com/repository/docker/megen/egg-example

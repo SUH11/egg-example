@@ -6,8 +6,9 @@ services:
       - "27018:27017"
   egg-example:
     image: egg-example
+    # ports以下无效，因为在Dockerfile的镜像里expose 7002了
     ports:
-      - "7004:7002"
+      - "7006:7002"
     volumes:
       - .:/webapp
       - logvolume01:/var/log

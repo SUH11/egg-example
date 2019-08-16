@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27018:27017"
+  egg-example:
+    image: egg-example
+    ports:
+      - "7004:7002"
+    volumes:
+      - .:/webapp
+      - logvolume01:/var/log
+    links:
+      - mongo
+
+volumes:
+  logvolume01: {}

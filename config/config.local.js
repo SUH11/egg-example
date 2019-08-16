@@ -1,6 +1,6 @@
 exports.mongoose = {
     client: {
-        url: 'mongodb://127.0.0.1:27017/egg-example',
+        url: 'mongodb://172.19.0.1:27018/egg-example',
         options: {}
     }
 }
@@ -14,5 +14,5 @@ exports.mongoose = {
 //     }
 // }
 
-exports.baseUrl = 'http://127.0.0.1:7001';
-exports.redirectActivationUrl = 'http://127.0.0.1:8080/activation';
+exports.baseUrl = 'http://172.19.0.1:7001';
+// exports.redirectActivationUrl = 'http://172.19.0.1:8080/activation';
